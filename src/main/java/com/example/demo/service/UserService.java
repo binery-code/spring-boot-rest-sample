@@ -3,25 +3,33 @@ package com.example.demo.service;
 import com.example.demo.dto.UserDTO;
 import com.example.demo.model.User;
 import com.example.demo.repo.UserRepository;
+import lombok.extern.java.Log;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Level;
 
 @Service
+@Log
 public class UserService {
 
     @Autowired
     private UserRepository userRepository;
 
     public User getUserById(int userId) throws Exception {
+
+            log.info("Get user by Id................................");
             User user = userRepository.findById(userId).orElseThrow( () -> new Exception("User not found for Id" + userId));
             return user;
     }
 
     public List<User> getAllUsers(){
+
+        log.log(Level.INFO, "Get All users....................");
         List<User> userList = new ArrayList<>();
         userRepository.findAll().forEach(userList::add);
         return userList;
