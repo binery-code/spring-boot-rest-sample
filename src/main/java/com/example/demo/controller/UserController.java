@@ -24,7 +24,10 @@ public class UserController {
        List<UserDTO> userDTOList = new ArrayList<>();
 
        for(User u: userList){
-           UserDTO userDTO = new UserDTO(u.getId(), u.getName(), u.getAge());
+           UserDTO userDTO = UserDTO.builder()
+                   .id(u.getId())
+                   .name(u.getName())
+                   .age(u.getAge()).build();
            userDTOList.add(userDTO);
        }
 
@@ -36,7 +39,11 @@ public class UserController {
 
         try {
             User user = userService.getUserById(Integer.valueOf(id));
-            return new UserDTO(user.getId(), user.getName(), user.getAge());
+            return UserDTO.builder()
+                    .id(user.getId())
+                    .name(user.getName())
+                    .age(user.getAge())
+                    .build();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -47,7 +54,11 @@ public class UserController {
     public UserDTO saveUser(@RequestBody  UserDTO userDTO){
 
         User savedUser =  userService.saveUser(userDTO);
-        return new UserDTO(savedUser.getId(), savedUser.getName(),savedUser.getAge());
+        return UserDTO.builder()
+                .id(savedUser.getId())
+                .name(savedUser.getName())
+                .age(savedUser.getAge())
+                .build();
     }
 
     @PutMapping("/{id}")

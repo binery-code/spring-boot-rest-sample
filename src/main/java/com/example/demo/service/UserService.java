@@ -28,7 +28,12 @@ public class UserService {
     }
 
     public User saveUser(UserDTO userDTO){
-       User savedUser =  userRepository.save(new User(userDTO.getId(), userDTO.getName(), userDTO.getAge()));
+       User savedUser =  userRepository.save(
+               User.builder()
+                       .id(userDTO.getId())
+                       .age(userDTO.getAge())
+                       .name(userDTO.getName())
+                       .build());
        return savedUser;
     }
 
