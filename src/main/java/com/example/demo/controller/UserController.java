@@ -17,6 +17,7 @@ public class UserController {
     @Autowired
     UserService userService;
 
+
     @GetMapping("/")
     public List<UserDTO> getUsers(){
 
@@ -27,12 +28,35 @@ public class UserController {
            UserDTO userDTO = UserDTO.builder()
                    .id(u.getId())
                    .name(u.getName())
-                   .age(u.getAge()).build();
+                   .age(u.getAge())
+                   .status(u.getStatus())
+                   .build();
+
            userDTOList.add(userDTO);
        }
 
        return userDTOList;
     }
+
+    @GetMapping("/user")
+    public List<UserDTO> getUsersByParams(@RequestParam(required = false) String name, @RequestParam(required = false) String age, @RequestParam(required = false) String status){
+
+        List<User> userList = userService.getUsersByParams(name, status, age);
+        List<UserDTO> userDTOList = new ArrayList<>();
+
+        for(User u: userList){
+            UserDTO userDTO = UserDTO.builder()
+                    .id(u.getId())
+                    .name(u.getName())
+                    .age(u.getAge())
+                    .status(u.getStatus())
+                    .build();
+            userDTOList.add(userDTO);
+        }
+
+        return userDTOList;
+    }
+
 
     @GetMapping("/{id}")
     public UserDTO getUserById(@PathVariable String id){
@@ -43,6 +67,7 @@ public class UserController {
                     .id(user.getId())
                     .name(user.getName())
                     .age(user.getAge())
+                    .status(user.getStatus())
                     .build();
         } catch (Exception e) {
             e.printStackTrace();
@@ -58,6 +83,7 @@ public class UserController {
                 .id(savedUser.getId())
                 .name(savedUser.getName())
                 .age(savedUser.getAge())
+                .status(savedUser.getStatus())
                 .build();
     }
 
@@ -69,9 +95,10 @@ public class UserController {
             if(user != null){
                 user.setName(userDTO.getName());
                 user.setAge(userDTO.getAge());
+                user.setStatus(userDTO.getStatus());
                 User savedUser = userService.saveUser(user);
 
-                return new UserDTO(savedUser.getId(), savedUser.getName(), savedUser.getAge());
+                return new UserDTO(savedUser.getId(), savedUser.getName(), savedUser.getAge(), savedUser.getStatus());
             }else{
                 throw new RuntimeException("User not found for id " + id);
             }

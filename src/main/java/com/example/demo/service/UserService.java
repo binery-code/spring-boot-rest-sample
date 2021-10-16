@@ -41,6 +41,7 @@ public class UserService {
                        .id(userDTO.getId())
                        .age(userDTO.getAge())
                        .name(userDTO.getName())
+                       .status(userDTO.getStatus())
                        .build());
        return savedUser;
     }
@@ -55,6 +56,23 @@ public class UserService {
         }catch (Exception e){
             throw new Exception(e);
         }
+    }
+
+
+    public List<User> getUsersByParams(String userName, String status, String age){
+        log.info("params are username = " + userName +  "and status =" + status + " and age =" + age );
+
+//        List l = new ArrayList();
+//        l.add("test1");
+//        l.add("uuu");
+        //return userRepository.findByNameIn(l);
+
+        //return  userRepository.findByNameNot("test1");
+        //return userRepository.findByNameOrAge(userName, status);
+        //return  userRepository.findByNameEndsWith(userName);
+
+        return  userRepository.findByNameAndStatus(userName, status);
+
     }
 
 
